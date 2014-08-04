@@ -1,0 +1,29 @@
+{
+  "name": "angular-cassandra-web",
+  "version": "0.0.1",
+  "authors": [
+    "paul <akwangho@gmail.com>"
+  ],
+  "main": "index.html",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "cassandra",
+    "angular"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "~0.11.0",
+    "bootstrap": "~3.2.0",
+    "angular": "~1.2.21"
+  }
+}

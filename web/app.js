@@ -1,0 +1,1 @@
+var app = angular.module("cassandraWeb", ['ui.bootstrap']); //angular-bootstrap
