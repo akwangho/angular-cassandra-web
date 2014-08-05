@@ -26,7 +26,7 @@ System.prototype.describeKeyspaces = function(callback) {
 };
 
 app.get('/api/ks', function(req, res) {
-var sys = new System('172.17.25.181:9160');
+    var sys = new System('172.17.25.181:9160');
 
     sys.describeKeyspaces(function(err, ksDefs) {
         if (err) {

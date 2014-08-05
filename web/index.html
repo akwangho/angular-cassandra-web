@@ -4,14 +4,52 @@
     <meta charset="UTF-8">
     <title>Angular Cassandra Web</title>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular.treeview/angular.treeview.js"></script>
     <script src="app.js"></script>
-    <script src="controller/webController.js"></script>
+    <script src="controllers/webController.js"></script>
     <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="bower_components/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="bower_components/angular.treeview/css/angular.treeview.css" rel="stylesheet" />
+    <style>
+        div[data-angular-treeview="true"]>ul {
+            display: inline-block;
+        }
+        div[resizable] {
+            border: 1px solid Black;
+            width: 50%;
+        }
+    </style>
 </head>
-<body ng-controller="webCtrl">
-    <button ng-click="getKeyspaceInfo()">Go</button>
-    {{keyspaces}}
+<body ng-controller="webCtrl" ng-init="getKeyspaceInfo()">
+<div class="panel panel-default">
+    <div resizable>
+        Keyspaces
+        <div
+                data-angular-treeview="true"
+                data-tree-id="mytree"
+                data-tree-model="treeData"
+                data-node-id="id"
+                data-node-label="label"
+                data-node-children="children" >
+        </div>
+    <!--<div class="well">-->
+        <!--<span ng-repeat="ks in keyspaces">-->
+            <!--<button ng-click="selectKeyspace($index)" class="btn btn-success">{{ks.name}}</button>-->
+        <!--</span>-->
+    </div>
+    <!--<div class="well">-->
+        <!--<span ng-repeat="cf in keyspaces[ksSelectIndex].cf_defs | orderBy:'name'">-->
+            <!--<button ng-click="selectColumnFamily($index)" class="btn btn-primary" style=" margin-bottom: 10px; ">{{cf.name}}</button>-->
+        <!--</span>-->
+    <!--</div>-->
+    <div id="right">
+        asb
+        <!--<div class="well">-->
+            <!--<h3>aaa</h3>-->
+            <!--{{keyspaces[ksSelectIndex]}}-->
+        <!--</div>-->
+    </div>
+</div>
+
 </body>
 </html>
