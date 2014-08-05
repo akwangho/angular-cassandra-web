@@ -1,0 +1,58 @@
+div[data-angular-treeview="true"]>ul {
+    display: inline-block;
+}
+
+#topnav {
+    display: block;
+    height: 35px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #DDD;
+}
+
+#sidebar {
+    background-color: #EEE;
+    position: absolute;
+    top: 35px;
+    bottom: 0;
+    left: 0;
+    width: 300px;
+    overflow: auto;
+}
+#content {
+    position: absolute;
+    top: 35px;
+    bottom: 0;
+    left: 306px /* 400 + 6*/;
+    right: 0;
+    overflow: hidden;
+    color: #FFF;
+
+}
+#top-content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #444;
+    overflow: auto;
+}
+
+#sidebar-resizer {
+    background-color: #666;
+    position: absolute;
+    top: 35px;
+    bottom: 0;
+    left: 300px;
+    width: 6px;
+    border-right: 1px solid grey;
+    cursor: col-resize;
+}
+
+#sidebar-resizer:hover, #preview-resizer:hover {
+    background-color: #AAA;
+    border-right: 1px solid #000;
+}
