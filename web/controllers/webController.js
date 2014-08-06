@@ -1,7 +1,7 @@
 //'use strict';
 
-angular.module("cassandraWeb", ['angularTreeview'])
-    .controller("webCtrl", function ($scope, $http) {
+angular.module("cassandraWeb", ['angularTreeview', 'jsonFormatter'])
+    .controller("webCtrl", function ($scope, $http, $compile) {
 
         $scope.getKeyspaceInfo = function() {
             $http({
@@ -54,6 +54,7 @@ angular.module("cassandraWeb", ['angularTreeview'])
                         ksInfo.push({
                             label: cf.name,
                             children: cfInfo,
+                            keyspace: ks.name,
                             isColumnFamily: true,
                             collapsed: true
                         });
@@ -73,14 +74,36 @@ angular.module("cassandraWeb", ['angularTreeview'])
             };
         };
 
-        $scope.selectKeyspace = function(index) {
-            $scope.ksSelectIndex = index;
+        $scope.selectKey = function(idx) {
+            $scope.selIndex = idx;
+            console.log(idx);
+
+            // FIXME: Bad idea to operate DOM directly, we should use directive in the long run
+            angular.element(document.querySelector("#json-data")).replaceWith(
+                $compile('<json-formatter id="json-data" class="dark" open="1" json=\'' + JSON.stringify($scope.columns[$scope.selIndex].colHash) + '\'></json-formatter>')($scope)
+            );
         };
 
-        $scope.selectColumnFamily = function(index) {
-            $scope.cfSelectIndex = index;
-        };
+        $scope.$watch('mytree.currentNode', function() {
+            if ($scope.mytree.currentNode && $scope.mytree.currentNode.isColumnFamily) {
+                var cf = $scope.mytree.currentNode;
 
+
+                console.log('hey, mytree.currentNode has changed!' + $scope.mytree.currentNode.label);
+
+
+                $http({
+                    url: '/api/' + cf.keyspace + '/' + cf.label,
+                    method: "GET"
+                }).success(function (res) {
+                    $scope.columns = res;
+                }).error(function (error) {
+                    $scope.error = error;
+                });
+
+
+            }
+        });
 
         $scope.treeData = [];
 

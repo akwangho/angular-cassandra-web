@@ -5,11 +5,13 @@
     <title>Angular Cassandra Web</title>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular.treeview/angular.treeview.js"></script>
+    <script src="bower_components/json-formatter/lib/json-formatter.js"></script>
     <script src="app.js"></script>
     <script src="controllers/webController.js"></script>
     <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="bower_components/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
     <link href="bower_components/angular.treeview/css/angular.treeview.css" rel="stylesheet" />
+    <link href="bower_components/json-formatter/lib/json-formatter.css" rel="stylesheet" />
     <link href="css/cassandra-web.css" rel="stylesheet" />
 
     <!--<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>-->
@@ -32,7 +34,13 @@
 
 <div id="content">
     <div id="top-content">
-        {{mytree.currentNode.label}} - isCF: {{mytree.currentNode.isColumnFamily? true: false}}
+        <div ng-repeat="column in columns">
+            <button class="btn btn-primary" ng-click="selectKey($index)">{{column.key}}</button><br />
+            <!--<div>-->
+                <!--<json-formatter open="1" json="{{column.colHash}}"></json-formatter>-->
+            <!--</div>-->
+        </div>
+        <div id="json-data"></div>
     </div>
 </div>
 
