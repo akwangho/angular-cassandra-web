@@ -76,21 +76,17 @@ angular.module("cassandraWeb", ['angularTreeview', 'jsonFormatter'])
 
         $scope.selectKey = function(idx) {
             $scope.selIndex = idx;
-            console.log(idx);
+            var data = JSON.stringify($scope.columns[$scope.selIndex].colHash).replace(/\'/g,"\\\"");
 
             // FIXME: Bad idea to operate DOM directly, we should use directive in the long run
             angular.element(document.querySelector("#json-data")).replaceWith(
-                $compile('<json-formatter id="json-data" class="dark" open="1" json=\'' + JSON.stringify($scope.columns[$scope.selIndex].colHash) + '\'></json-formatter>')($scope)
+                $compile('<json-formatter id="json-data" class="dark" open="1" json=\'' + data + '\'></json-formatter>')($scope)
             );
         };
 
         $scope.$watch('mytree.currentNode', function() {
             if ($scope.mytree.currentNode && $scope.mytree.currentNode.isColumnFamily) {
                 var cf = $scope.mytree.currentNode;
-
-
-                console.log('hey, mytree.currentNode has changed!' + $scope.mytree.currentNode.label);
-
 
                 $http({
                     url: '/api/' + cf.keyspace + '/' + cf.label,

@@ -12,6 +12,7 @@
     "cookie-parser": "~1.0.1",
     "body-parser": "~1.0.0",
     "debug": "~0.7.4",
-    "cassandra-client": "~0.15.2"
+    "cassandra-client": "~0.15.2",
+    "underscore": "~1.6.0"
   }
 }

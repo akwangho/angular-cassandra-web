@@ -17,10 +17,10 @@
     <!--<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>-->
 </head>
 <body ng-controller="webCtrl" ng-init="getKeyspaceInfo()">
-<div id="topnav">Top navbar</div>
+<div id="topnav"><h4>Angular Cassandra Web</h4></div>
 
 <div id="sidebar">
-    <h4>Keyspaces</h4>
+    <h5>Keyspaces</h5>
 
     <div
             data-angular-treeview="true"
@@ -34,11 +34,10 @@
 
 <div id="content">
     <div id="top-content">
+        <!--<div ng-repeat="column in columns | orderBy: 'key'">-->
         <div ng-repeat="column in columns">
-            <button class="btn btn-primary" ng-click="selectKey($index)">{{column.key}}</button><br />
-            <!--<div>-->
-                <!--<json-formatter open="1" json="{{column.colHash}}"></json-formatter>-->
-            <!--</div>-->
+            <a class="btn btn-primary" style="min-width: 350px; text-align: left; font-family: 'Courier New', Courier, serif;"
+                    ng-click="selectKey($index)">{{column.key}} ({{column._colCount}})</a> </br>
         </div>
         <div id="json-data"></div>
     </div>
