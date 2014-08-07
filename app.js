@@ -28,30 +28,14 @@ System.prototype.describeKeyspaces = function(callback) {
 
 app.get('/api/:ks/:cf', function(req, res) {
     var PooledConnection = require('cassandra-client').PooledConnection;
-    var hosts = ['172.17.25.181:9160'];
+    var hosts = [];
+    console.log(req.query.ip);
+    hosts.push(req.query.ip);
     var ks = req.params.ks;
-    console.log('ks:'+ks);
     var connection_pool = new PooledConnection({'hosts': hosts, 'keyspace': ks});
-
-//    var str = "58:93:96:2B:D8:E0";
-//    var bytes = "";
-//
-//    for (var i = 0; i < str.length; ++i)
-//    {
-//        bytes += str.charCodeAt(i).toString(16);
-//    }
-//
-//    var str2 = "timezone";
-//
-//    var bytes2 = "";
-//    for (var i = 0; i < str2.length; ++i)
-//    {
-//        bytes2 += str2.charCodeAt(i).toString(16);
-//    }
 
 // Reading
     var cf = req.params.cf;
-    console.log('cf:'+cf);
     connection_pool.execute('SELECT * FROM ?', [cf],
         function(err, rows) {
             if (err) {
@@ -73,7 +57,6 @@ app.get('/api/:ks/:cf', function(req, res) {
                                         newObj[kv[0]]=kv[1];
                                     });
                                     rows[i].colHash[key] = newObj;}
-//                                rows[i].colHash[key].sort();
                             }
                         }
                         catch (e) {
@@ -89,62 +72,12 @@ app.get('/api/:ks/:cf', function(req, res) {
             connection_pool.shutdown(function() { console.log("connection pool shutdown"); });
         }
     );
-
-//    var requestUrl = req.body.requestUrl;
-//    var requestContent = req.body.requestContent;
-
-// Creating a new connection pool.
-//    var PooledConnection = require('cassandra-client').PooledConnection;
-//    var hosts = ['172.17.25.181:9160'];
-//    var connection_pool = new PooledConnection({'hosts': hosts, 'keyspace': 'wsg'});
-//
-//    var str = "58:93:96:2B:D8:E0";
-//    var bytes = "";
-//
-//    for (var i = 0; i < str.length; ++i)
-//    {
-//        bytes += str.charCodeAt(i).toString(16);
-//    }
-//
-//    var str2 = "timezone";
-//
-//    var bytes2 = "";
-//    for (var i = 0; i < str2.length; ++i)
-//    {
-//        bytes2 += str2.charCodeAt(i).toString(16);
-//    }
-//
-//// Reading
-//    connection_pool.execute('SELECT * FROM ap WHERE KEY=?', [bytes],
-//        function(err, row) {
-//            var obj = {};
-//            if (err) {
-//                console.log(err);
-//            } else {
-////            console.log(row[0].cols);
-//                row[0].cols.forEach(function (entry) {
-//                    obj[entry.name] = entry.value instanceof Buffer && entry.value.toString() || entry.value;
-//                });
-//            }
-////            console.log(row[0].cols[0].name.toString());
-////            console.log(row[0].cols[0].value.toString());
-//
-////        else console.log("got result " + row.cols[0].value);
-//// Shutting down a pool
-//            connection_pool.shutdown(function() { console.log("connection pool shutdown"); });
-//            console.log(obj);
-////        console.log(JSON.parse(obj.lanPortStatus.toString()));
-////        console.log(obj.lanPortStatus instanceof Buffer)
-//        }
-//    );
-
-
-
 });
 
 
 app.get('/api/ks', function(req, res) {
-    var sys = new System('172.17.25.181:9160');
+    console.log(req.query.ip);
+    var sys = new System(req.query.ip);
 
     sys.describeKeyspaces(function(err, ksDefs) {
         if (err) {

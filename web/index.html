@@ -16,8 +16,13 @@
 
     <!--<script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>-->
 </head>
-<body ng-controller="webCtrl" ng-init="getKeyspaceInfo()">
-<div id="topnav"><h4>Angular Cassandra Web</h4></div>
+<body ng-controller="webCtrl">
+
+<div id="topnav">
+    &nbsp;&nbsp;Angular Cassandra Web
+    <button class="btn btn-default" ng-click="getKeyspaceInfo()">Query</button>
+    <input type="text" ng-model="ip" />
+</div>
 
 <div id="sidebar">
     <h5>Keyspaces</h5>
@@ -33,23 +38,34 @@
 </div>
 
 <div id="content">
-    <div id="top-content">
-        <!--<div ng-repeat="column in columns | orderBy: 'key'">-->
-        <div ng-repeat="column in columns">
-            <a class="btn btn-primary" style="min-width: 350px; text-align: left; font-family: 'Courier New', Courier, serif;"
-                    ng-click="selectKey($index)">{{column.key}} ({{column._colCount}})</a> </br>
+    <div id="left-content">
+        <div ng-repeat="column in columns | orderBy: 'key'">
+            <a class="btn btn-primary" style="min-width: 380px; text-align: left; font-family: 'Courier New', Courier, serif;"
+                    ng-click="selectColumn(column)">{{column.key}} ({{column._colCount}})</a> </br>
         </div>
+    </div>
+    <div id="right-content">
         <div id="json-data"></div>
+    </div>
+    <div id="resizer2" class="sidebar-resizer"
+         resizer="vertical"
+         resizer-left-shift="#sidebar"
+         resizer-width="6"
+         resizer-left="#left-content"
+         resizer-right="#right-content"
+         resizer-max="2000">
     </div>
 </div>
 
-<div id="sidebar-resizer"
+<div id="resizer1" class="sidebar-resizer"
      resizer="vertical"
      resizer-width="6"
      resizer-left="#sidebar"
      resizer-right="#content"
      resizer-max="2000">
 </div>
-
+<div ng-show="waiting" id="wrapper">
+    <div ng-show="waiting" id="mask"></div>
+</div>
 </body>
 </html>

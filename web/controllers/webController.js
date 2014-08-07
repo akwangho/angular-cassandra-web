@@ -3,14 +3,20 @@
 angular.module("cassandraWeb", ['angularTreeview', 'jsonFormatter'])
     .controller("webCtrl", function ($scope, $http, $compile) {
 
+        $scope.ip = "127.0.0.1:9160";
+
         $scope.getKeyspaceInfo = function() {
+            $scope.waiting = true;
             $http({
                 url: '/api/ks',
-                method: "GET"
+                method: "GET",
+                params: {ip: $scope.ip}
             }).success(function (keyspaces) {
                 genTreeData(keyspaces);
+                $scope.waiting = false;
             }).error(function (error) {
                 $scope.error = error;
+                $scope.waiting = false;
             });
             function bin2String(array) {
                 var result = "";
@@ -23,6 +29,7 @@ angular.module("cassandraWeb", ['angularTreeview', 'jsonFormatter'])
                 return obj1.label > obj2.label? 1: -1;
             }
             var genTreeData = function (keyspaces) {
+                $scope.treeData = [];
                 keyspaces.forEach(function (ks) {
                     var ksInfo = [];
                     ks.cf_defs.forEach(function (cf) {
@@ -74,11 +81,10 @@ angular.module("cassandraWeb", ['angularTreeview', 'jsonFormatter'])
             };
         };
 
-        $scope.selectKey = function(idx) {
-            $scope.selIndex = idx;
-            var data = JSON.stringify($scope.columns[$scope.selIndex].colHash).replace(/\'/g,"\\\"");
+        $scope.selectColumn = function(cf) {
+            var data = JSON.stringify(cf.colHash).replace(/\'/g,"\\\"");
 
-            // FIXME: Bad idea to operate DOM directly, we should use directive in the long run
+            // TODO: Bad idea to operate DOM directly, we should use directive in the long run
             angular.element(document.querySelector("#json-data")).replaceWith(
                 $compile('<json-formatter id="json-data" class="dark" open="1" json=\'' + data + '\'></json-formatter>')($scope)
             );
@@ -88,13 +94,17 @@ angular.module("cassandraWeb", ['angularTreeview', 'jsonFormatter'])
             if ($scope.mytree.currentNode && $scope.mytree.currentNode.isColumnFamily) {
                 var cf = $scope.mytree.currentNode;
 
+                $scope.waiting = true;
                 $http({
                     url: '/api/' + cf.keyspace + '/' + cf.label,
-                    method: "GET"
+                    method: "GET",
+                    params: {ip: $scope.ip}
                 }).success(function (res) {
                     $scope.columns = res;
+                    $scope.waiting = false;
                 }).error(function (error) {
                     $scope.error = error;
+                    $scope.waiting = false;
                 });
 
 
@@ -117,8 +127,12 @@ angular.module("cassandraWeb", ['angularTreeview', 'jsonFormatter'])
             function mousemove(event) {
 
                 if ($attrs.resizer == 'vertical') {
+                    var obj = angular.element(document.querySelector($attrs.resizerLeftShift)).prop('offsetWidth');
+                    var shift = obj? parseInt(obj) + parseInt($attrs.resizerWidth): 0;
+                    console.log(shift);
                     // Handle vertical resizer
-                    var x = event.pageX;
+
+                    var x = event.pageX - shift;
 
                     if ($attrs.resizerMax && x > $attrs.resizerMax) {
                         x = parseInt($attrs.resizerMax);

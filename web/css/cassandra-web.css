@@ -25,34 +25,79 @@ div[data-angular-treeview="true"]>ul {
     position: absolute;
     top: 35px;
     bottom: 0;
-    left: 306px /* 400 + 6*/;
+    left: 306px /* 300 + 6*/;
     right: 0;
     overflow: hidden;
     color: #FFF;
 
 }
-#top-content {
+#left-content {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
+    width: 380px;
+    background-color: #999;
+    overflow: auto;
+}
+
+#right-content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 386px;
+    right: 0;
     background-color: #444;
     overflow: auto;
 }
 
-#sidebar-resizer {
-    background-color: #666;
-    position: absolute;
+#resizer1 {
     top: 35px;
     bottom: 0;
     left: 300px;
     width: 6px;
+}
+
+#resizer2 {
+    top: 0;
+    bottom: 0;
+    left: 380px;
+    width: 6px;
+}
+
+.sidebar-resizer {
+    background-color: #666;
+    position: absolute;
     border-right: 1px solid grey;
     cursor: col-resize;
 }
 
-#sidebar-resizer:hover, #preview-resizer:hover {
+.sidebar-resizer:hover, .preview-resizer:hover {
     background-color: #AAA;
     border-right: 1px solid #000;
+}
+
+#mask {
+    /*opacity: 0.5;*/
+    position: relative;
+    top: 0; bottom: 0; right: 0; left: 0;  /* follow the parent's edges */
+    padding-bottom: 50%;
+    margin: 0 auto;
+    z-index: 999;
+    width: 100px;
+    height: 100px;
+    background-image:url(../images/icon_processing.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#wrapper {
+    position: absolute;
+    top: 35px;
+    z-index: 998;
+    opacity: 0.7;
+    background-color: #080808;
+    width: 100vw;
+    height: 100%;
 }
